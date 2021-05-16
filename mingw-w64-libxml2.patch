@@ -1,8 +1,8 @@
 diff --git a/mingw-w64-libxml2/PKGBUILD b/mingw-w64-libxml2/PKGBUILD
-index c6ec190e5..9b255ad11 100644
+index c6ec190e5..7b69748ed 100644
 --- a/mingw-w64-libxml2/PKGBUILD
 +++ b/mingw-w64-libxml2/PKGBUILD
-@@ -101,47 +101,20 @@ build() {
+@@ -101,47 +101,17 @@ build() {
      --with-modules \
      --enable-static \
      --disable-shared \
@@ -33,9 +33,8 @@ index c6ec190e5..9b255ad11 100644
  
  check() {
 -  cd ${srcdir}/build-shared-${CARCH}
-+  cd ${srcdir}/build-static-${CARCH}
-   cp -r ../xmlconf .
-   make check
+-  cp -r ../xmlconf .
+-  make check
  }
  
  package() {
