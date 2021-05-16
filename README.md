@@ -1,0 +1,1 @@
+# static-mingw-w64-libxml2
