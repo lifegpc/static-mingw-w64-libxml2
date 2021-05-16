@@ -1,11 +1,14 @@
 diff --git a/mingw-w64-libxml2/PKGBUILD b/mingw-w64-libxml2/PKGBUILD
-index c6ec190e5..a408785b8 100644
+index c6ec190e5..9b255ad11 100644
 --- a/mingw-w64-libxml2/PKGBUILD
 +++ b/mingw-w64-libxml2/PKGBUILD
-@@ -104,44 +104,18 @@ build() {
-     --with-threads=win32 \
-     CFLAGS="${CFLAGS} -DLIBXML_STATIC_FOR_DLL -DNOLIBTOOL"
-   make
+@@ -101,47 +101,20 @@ build() {
+     --with-modules \
+     --enable-static \
+     --disable-shared \
+-    --with-threads=win32 \
+-    CFLAGS="${CFLAGS} -DLIBXML_STATIC_FOR_DLL -DNOLIBTOOL"
+-  make
 -
 -  # Shared build
 -  msg2 "Building shared with Python ext ${CARCH}"
@@ -20,12 +23,12 @@ index c6ec190e5..a408785b8 100644
 -    --with-modules \
 -    --disable-static \
 -    --enable-shared \
--    --with-threads=win32
+     --with-threads=win32
 -
 -  # Hack for mingw python
 -  local PREFIX_DEPS=$(cygpath -am ${MINGW_PREFIX})
 -  find . -type f -name "Makefile" -exec sed -i "s|${PREFIX_DEPS}|${MINGW_PREFIX}|g" {} \;
--  make
+   make
  }
  
  check() {
