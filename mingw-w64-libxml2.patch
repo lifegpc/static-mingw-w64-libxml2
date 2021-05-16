@@ -1,0 +1,51 @@
+diff --git a/mingw-w64-libxml2/PKGBUILD b/mingw-w64-libxml2/PKGBUILD
+index c6ec190e5..a408785b8 100644
+--- a/mingw-w64-libxml2/PKGBUILD
++++ b/mingw-w64-libxml2/PKGBUILD
+@@ -104,44 +104,18 @@ build() {
+     --with-threads=win32 \
+     CFLAGS="${CFLAGS} -DLIBXML_STATIC_FOR_DLL -DNOLIBTOOL"
+   make
+-
+-  # Shared build
+-  msg2 "Building shared with Python ext ${CARCH}"
+-  [[ -d "${srcdir}"/build-shared-${CARCH} ]] && rm -rf "${srcdir}"/build-shared-${CARCH}
+-  mkdir -p ${srcdir}/build-shared-${CARCH} && cd ${srcdir}/build-shared-${CARCH}
+-  ../${_realname}-${pkgver}/configure \
+-    --prefix=${MINGW_PREFIX} \
+-    --host=${MINGW_CHOST} \
+-    --target=${MINGW_CHOST} \
+-    --build="${MINGW_CHOST}" \
+-    --with-python=${MINGW_PREFIX}/bin/python \
+-    --with-modules \
+-    --disable-static \
+-    --enable-shared \
+-    --with-threads=win32
+-
+-  # Hack for mingw python
+-  local PREFIX_DEPS=$(cygpath -am ${MINGW_PREFIX})
+-  find . -type f -name "Makefile" -exec sed -i "s|${PREFIX_DEPS}|${MINGW_PREFIX}|g" {} \;
+-  make
+ }
+ 
+ check() {
+-  cd ${srcdir}/build-shared-${CARCH}
++  cd ${srcdir}/build-static-${CARCH}
+   cp -r ../xmlconf .
+   make check
+ }
+ 
+ package() {
+-  # First install shared
+-  cd ${srcdir}/build-shared-${CARCH}
+-
+-  make install DESTDIR="${pkgdir}"
+-
+-  # then manually install static
+   cd ${srcdir}/build-static-${CARCH}
+ 
+-  install -m 0644 .libs/libxml2.a "${pkgdir}${MINGW_PREFIX}"/lib/
++  make install DESTDIR="${pkgdir}"
+ 
+   # License
+   install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING" "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING"

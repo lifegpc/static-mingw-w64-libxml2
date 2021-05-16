@@ -1,0 +1,45 @@
+# This is a basic workflow to help you get started with Actions
+
+name: build
+
+# Controls when the action will run. 
+on:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-2019
+    
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: base-devel git mingw64/mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-diffutils mingw64/mingw-w64-x86_64-pkg-config
+
+      - name: Build
+        run: ./build.sh
+
+      - name: Upload file
+        uses: actions/upload-artifact@v2
+        with:
+          name: mingw-w64-libxml2
+          path: packages/mingw-w64-libxml2/mingw-w64*libxml2*.tar*
